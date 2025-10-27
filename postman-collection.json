@@ -1,0 +1,214 @@
+{
+  "info": {
+    "name": "FastGPT SSO Java API",
+    "description": "FastGPT SSO Java 应用的 API 测试集合",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "redirectUri",
+      "value": "http://localhost:3000/callback",
+      "type": "string"
+    },
+    {
+      "key": "testState",
+      "value": "test-state-123",
+      "type": "string"
+    },
+    {
+      "key": "testCode",
+      "value": "test-code-456",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "健康检查",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/test",
+          "host": ["{{baseUrl}}"],
+          "path": ["test"]
+        },
+        "description": "检查服务是否正常运行"
+      },
+      "response": []
+    },
+    {
+      "name": "获取认证URL",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/login/oauth/getAuthURL?redirect_uri={{redirectUri}}&state={{testState}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["login", "oauth", "getAuthURL"],
+          "query": [
+            {
+              "key": "redirect_uri",
+              "value": "{{redirectUri}}"
+            },
+            {
+              "key": "state",
+              "value": "{{testState}}"
+            }
+          ]
+        },
+        "description": "获取OAuth认证URL"
+      },
+      "response": []
+    },
+    {
+      "name": "OAuth回调",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/login/oauth/callback?code={{testCode}}&state={{testState}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["login", "oauth", "callback"],
+          "query": [
+            {
+              "key": "code",
+              "value": "{{testCode}}"
+            },
+            {
+              "key": "state",
+              "value": "{{testState}}"
+            }
+          ]
+        },
+        "description": "处理OAuth认证回调"
+      },
+      "response": []
+    },
+    {
+      "name": "获取用户信息",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/login/oauth/getUserInfo?code={{testCode}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["login", "oauth", "getUserInfo"],
+          "query": [
+            {
+              "key": "code",
+              "value": "{{testCode}}"
+            }
+          ]
+        },
+        "description": "根据授权码获取用户信息"
+      },
+      "response": []
+    },
+    {
+      "name": "获取用户列表",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/list",
+          "host": ["{{baseUrl}}"],
+          "path": ["user", "list"]
+        },
+        "description": "获取系统中的用户列表"
+      },
+      "response": []
+    },
+    {
+      "name": "获取组织列表",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/org/list",
+          "host": ["{{baseUrl}}"],
+          "path": ["org", "list"]
+        },
+        "description": "获取系统中的组织列表"
+      },
+      "response": []
+    },
+    {
+      "name": "获取SAML元数据",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/xml"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/login/saml/metadata.xml",
+          "host": ["{{baseUrl}}"],
+          "path": ["login", "saml", "metadata.xml"]
+        },
+        "description": "获取SAML服务提供者元数据"
+      },
+      "response": []
+    },
+    {
+      "name": "SAML断言处理",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "SAMLResponse",
+              "value": "PHNhbWw6UmVzcG9uc2U+dGVzdDwvc2FtbDpSZXNwb25zZT4=",
+              "type": "text"
+            },
+            {
+              "key": "RelayState",
+              "value": "test-relay-state",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/login/saml/assert",
+          "host": ["{{baseUrl}}"],
+          "path": ["login", "saml", "assert"]
+        },
+        "description": "处理SAML身份提供者的断言"
+      },
+      "response": []
+    }
+  ]
+}
